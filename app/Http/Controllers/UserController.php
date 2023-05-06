@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 
 class UserController extends Controller
 {
@@ -57,7 +60,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+
+        if($request->hasFile('photo')){
+            $foto = $request->file('photo');
+            $filename = uniqid() . "_" . $foto->getClientOriginalName();
+            $foto->move(public_path('images'), $filename);
+            $url = URL::to('/') . '/public/images/' . $filename;
+
+            $user->photo = $url;
+        }
+        else $user->photo = '';
+        
+        if($user->save()){
+            Auth::attempt(['email' => $request->email, 'password' => $request->password], true);
+            $newUser = Auth::user(); 
+            $success['token'] =  $newUser->createToken('tokenAccess')->plainTextToken; 
+   
+            return response(["message" => "Usuário criado.", "token" => $success['token']], 201);
+        }
     }
 
     /**
