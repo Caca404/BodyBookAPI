@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('body_statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('photo');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->date('birth_date');
-            $table->string('password');
-            $table->rememberToken();
+            $table->integer('user_id');
+            $table->float('weight', 8, 2)->default(0);
+            $table->float('height', 8, 2)->default(0);
+            $table->float('neck', 8, 2)->default(0);
+            $table->float('waist', 8, 2)->default(0);
+            $table->float('hip', 8, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('body_statuses');
     }
 };

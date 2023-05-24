@@ -85,6 +85,16 @@ class UserController extends Controller
     }
 
     /**
+     * Get all user's exercises of actual week
+     * @return \Illuminate\Http\Response
+     */
+    public function weekExercises(Request $request)
+    {
+        $userLogged = Auth::user();
+        return response(["name" => $userLogged['name'], "weekExercises" => []]);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
