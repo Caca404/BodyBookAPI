@@ -94,6 +94,20 @@ class UserController extends Controller
         return response(["name" => $userLogged['name'], "weekExercises" => []]);
     }
 
+    public function lastBodyStatus(Request $request)
+    {
+        $userLogged = Auth::user();
+
+        $bodyStatusController = new BodyStatusController();
+        $responseBodyStatus = $bodyStatusController->getBodyStatuses($userLogged['id']);
+
+        return response([
+            "name" => $userLogged['name'],
+            "birthDate" => $userLogged['birth_date'], 
+            "statusBody" => $responseBodyStatus
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *

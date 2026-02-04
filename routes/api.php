@@ -27,5 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/userWeekExercises', [UserController::class, 'weekExercises']);
 
+    Route::get('/lastBodyStatus', [UserController::class, 'lastBodyStatus']);
+
     Route::get('/logout', [UserController::class, 'logout']);
 });
